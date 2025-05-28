@@ -25,8 +25,11 @@ from pydantic import BaseModel, Field
 from typing import Dict
 from dotenv import load_dotenv
 
+# Load environment variables at import time so they are available for all
+# functions that rely on them.
+load_dotenv()
+
 def retrieve_data_from_llm(question, context, py_obj):
-    load_dotenv()
     llm = ChatOpenAI(
         model=os.getenv("MODEL"),
         temperature=0,
