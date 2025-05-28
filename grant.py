@@ -13,7 +13,11 @@ argparser.add_argument("k", type=int, help="# nearest neighbors to retrieve for 
 args = argparser.parse_args()
 
 print("Loading PDF...")
-pages = parse(args.filepath)
+try:
+    pages = parse(args.filepath)
+except Exception as e:
+    print(f"Error loading PDF: {e}")
+    exit(1)
 
 embeddings = OllamaEmbeddings(model="nomic-embed-text")
 vector_store = InMemoryVectorStore.from_documents(pages, embeddings)
