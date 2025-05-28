@@ -3,7 +3,7 @@
 '''
 
 from parser import parse
-from rag import *
+from rag import sim_search, determine_pyobj, retrieve_data_from_llm
 from langchain_ollama import OllamaEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 import argparse
