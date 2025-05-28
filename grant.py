@@ -17,7 +17,11 @@ def main() -> None:
     args = argparser.parse_args()
 
     print("Loading PDF...")
-    pages = parse(args.filepath)
+    try:
+        pages = parse(args.filepath)
+    except Exception as e:
+        print(f"Failed to load PDF '{args.filepath}': {e}")
+        return
 
     embeddings = OllamaEmbeddings(model="nomic-embed-text")
     vector_store = InMemoryVectorStore.from_documents(pages, embeddings)
