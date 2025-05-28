@@ -14,14 +14,13 @@ Both versions load a PDF, create an in-memory vector store from embeddings, perf
 1. Create a virtual environment using [uv](https://github.com/astral-sh/uv):
 
    ```bash
-   uv venv .venv
-   source .venv/bin/activate
+   uv venv
    ```
 
 2. Install the Python requirements:
 
    ```bash
-   pip install -r requirements.txt
+   uv pip install -r requirements.txt
    ```
 
 ### TypeScript
@@ -38,7 +37,7 @@ yarn install
 - embedding model **nomic-embed-text**, chat llm **gemma3**
 
 ```bash
-python grant.py <path to pdf> <k-value>
+uv run grant.py <path to pdf> <k-value>
 ```
 
 ## TypeScript usage

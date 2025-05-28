@@ -6,3 +6,6 @@ __pycache__
 epa_runs
 ks_runs
 !ts/package.json
+ts/node_modules
+
+.python-version
