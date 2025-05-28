@@ -5,3 +5,4 @@ __pycache__
 .env
 epa_runs
 ks_runs
+!ts/package.json
