@@ -22,3 +22,11 @@ The TypeScript project lives in the `ts/` directory. Install its dependencies wi
 ```bash
 npx ts-node grant.ts <path to pdf> <k-value>
 ```
+
+## Environment variables
+
+The scripts expect the following variables to be set (usually via a `.env` file):
+
+- `MODEL` – name of the chat completion model to use
+- `OPENAI_KEY` – your API key
+- `OPENAI_BASE_URL` – base URL for the OpenAI-compatible endpoint
