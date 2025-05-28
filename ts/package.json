@@ -1,0 +1,22 @@
+{
+  "name": "grant-parser-ts",
+  "version": "0.1.0",
+  "description": "LangChain TypeScript for parsing grant PDFs and returning structured JSON",
+  "type": "module",
+  "main": "dist/grant.js",
+  "scripts": {
+    "start": "ts-node grant.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@langchain/community": "^0.0.17",
+    "@langchain/openai": "^0.0.10",
+    "langchain": "^0.1.0",
+    "zod": "^3.22.2",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
+  }
+}
