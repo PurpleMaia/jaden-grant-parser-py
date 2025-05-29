@@ -3,20 +3,61 @@ import { simSearch, retrieveDataFromLlm, determineSchema } from "./rag";
 import { OllamaEmbeddings } from "@langchain/community/embeddings/ollama";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import * as fs from "fs";
+import * as path from "path";
+
+async function collectPdfFiles(dir: string): Promise<string[]> {
+  let files: string[] = [];
+  const entries = await fs.promises.readdir(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files = files.concat(await collectPdfFiles(fullPath));
+    } else if (entry.isFile() && entry.name.toLowerCase().endsWith(".pdf")) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
 
 const args = process.argv.slice(2);
-if (args.length < 2) {
-  console.log("Usage: ts-node grant.ts <k-value> <path to pdf> [additional pdfs...]\n" +
-    "Example: ts-node grant.ts 3 file1.pdf file2.pdf");
+if (args.length < 1) {
+  console.log(
+    "Usage: ts-node grant.ts <k-value> [--folder <dir> | <pdf1> [pdf2 ...]]\n" +
+      "Example: ts-node grant.ts 3 --folder ./pdfs"
+  );
   process.exit(1);
 }
 
 const k = parseInt(args[0], 10);
-const filepaths = args.slice(1);
+let folder: string | undefined;
+const filepaths: string[] = [];
+for (let i = 1; i < args.length; i++) {
+  const arg = args[i];
+  if ((arg === "--folder" || arg === "-f") && i + 1 < args.length) {
+    folder = args[i + 1];
+    i++;
+  } else {
+    filepaths.push(arg);
+  }
+}
+
+async function resolveFilepaths(): Promise<string[]> {
+  if (folder) {
+    return collectPdfFiles(folder);
+  }
+  if (filepaths.length > 0) {
+    return filepaths;
+  }
+  console.error(
+    "Error: must specify either --folder <dir> or one or more PDF files"
+  );
+  process.exit(1);
+}
 
 (async () => {
   console.log("Loading PDFs...");
-  const pages = await parse(filepaths);
+  const filesToParse = await resolveFilepaths();
+  const pages = await parse(filesToParse);
 
   const embeddings = new OllamaEmbeddings({ model: "nomic-embed-text" });
   const vectorStore = await MemoryVectorStore.fromDocuments(pages, embeddings);
