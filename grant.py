@@ -63,7 +63,7 @@ def main() -> None:
             "What is the full name of the grant? List all projects or programs stated, including each project's name, start date, and end date."
         ),
         "spending": (
-            "What is the total grant amount? Break down the spending into: fringe benefits, indirect costs, travel, equipment, and other. For “other,” provide a list of items with their names and cost. Return only valid JSON."
+            "What is the total grant amount? Break down the spending into: salary, fringe/payroll benefits, indirect costs, travel, equipment, and other. For “other,” provide a list of items with their names and cost. Return only valid JSON."
         ),
     }
     vec_queries = {
@@ -71,7 +71,7 @@ def main() -> None:
             "Information about the grant's official name, and the names, start and end dates of any funded projects or programs."
         ),
         "spending": (
-            "Details about total funding, and how the grant money is allocated — including fringe benefits, indirect costs, travel, equipment, and other types of spending."
+            "Details about total funding, and how the grant money is allocated — including salary, fringe/payroll benefits, indirect costs, travel, equipment, and other types of spending."
         ),
     }
 
@@ -111,6 +111,7 @@ def main() -> None:
     filename = f"grant-{model_name}-{base}.json"
     with open(filename, "w") as outfile:
         outfile.write(obj)
+    print("Finished writing to "+filename)
 
 
 if __name__ == "__main__":
