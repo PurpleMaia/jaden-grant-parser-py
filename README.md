@@ -80,3 +80,35 @@ MODEL=gemma3
 OPENAI_KEY=sk-...
 OPENAI_BASE_URL=https://api.example.com/v1
 ```
+
+## Evaluation
+
+The `evaluate.py` script automates running `grant.py` on a set of PDFs and
+compares the produced JSON against reference files. The configuration is
+provided as a JSON array where each object specifies either a folder of PDFs or
+an explicit list of files along with the expected output path.
+
+Run the evaluator with:
+
+```bash
+uv run evaluate.py <config.json>
+```
+
+Example configuration:
+
+```json
+[
+  {
+    "files": ["pdfs/example1.pdf"],
+    "expected": "expected/example1.json",
+    "k": 2
+  },
+  {
+    "folder": "pdfs/grant2",
+    "expected": "expected/grant2.json"
+  }
+]
+```
+
+Each entry may include a custom `k` value for the similarity search. Runtime and
+accuracy scores are aggregated and printed in a summary table.
