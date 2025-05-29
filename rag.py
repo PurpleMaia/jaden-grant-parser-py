@@ -74,12 +74,14 @@ Format:
 # TODO can experiment with what metrics want through pydantic objects
 class Project(BaseModel):
     name: str = Field(..., description="Name or title of the project or program")
-    start_date: str = Field(..., description="Start date of the project in MM/DD/YYYY or YYYY-MM-DD format")
-    end_date: str = Field(..., description="End date of the project in MM/DD/YYYY or YYYY-MM-DD format")
+    start_date: str = Field(..., description="Start date of the project in YYYY-MM-DD format")
+    end_date: str = Field(..., description="End date of the project in YYYY-MM-DD format")
 
 class GeneralGrantInfo(BaseModel):
     grant_name: str = Field(..., description="The official name or title of the grant")
     projects: list[Project] = Field(..., description="List of projects funded by this grant, each with a name, start date, and end date")
+    start_date: str = Field(..., description="Overall start date of the funding in YYYY-MM-DD format")
+    end_date: str = Field(..., description="Overall end date of the funding in YYYY-MM-DD format")
     
 class Other(BaseModel):
     obj: str = Field(..., description="A specific object or item receiving funding under 'other' spending")

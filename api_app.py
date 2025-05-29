@@ -27,7 +27,7 @@ def process_grant(files: list[str], k: int = 4, model: str | None = None) -> dic
 
     llm_queries = {
         "general": (
-            "What is the full name of the grant? List all projects or programs stated, including each project's name, start date, and end date."
+            "What is the full name of the grant? What is the grant's overall start and end dates? List all projects or programs stated, including each project's name, start date, and end date."
         ),
         "spending": (
             "What is the total grant amount? Break down the spending into: salary, fringe/payroll benefits, indirect costs, travel, equipment, and other. For \u201cother,\u201d provide a list of items with their names and cost. Return only valid JSON."
@@ -35,7 +35,7 @@ def process_grant(files: list[str], k: int = 4, model: str | None = None) -> dic
     }
     vec_queries = {
         "general": (
-            "Information about the grant's official name, and the names, start and end dates of any funded projects or programs."
+            "Information about the grant's official name, if the grant has an overall start and end date, and the names, start and end dates of any funded projects or programs."
         ),
         "spending": (
             "Details about total funding, and how the grant money is allocated \u2014 including salary, fringe/payroll benefits, indirect costs, travel, equipment, and other types of spending."
@@ -62,7 +62,7 @@ app = FastAPI()
 TOKEN = os.getenv("API_TOKEN")
 WEB_USER = os.getenv("WEB_USER")
 WEB_PASS = os.getenv("WEB_PASS")
-DEFAULT_MODEL = os.getenv("MODEL")
+DEFAULT_MODEL = os.getenv("MODEL", "")
 
 
 @app.post("/api/grant")

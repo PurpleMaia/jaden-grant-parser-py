@@ -66,14 +66,18 @@ export const projectSchema = z.object({
   name: z.string().describe("Name or title of the project or program"),
   start_date: z
     .string()
-    .describe("Start date of the project in MM/DD/YYYY or YYYY-MM-DD format"),
+    .describe("Overall start date of the funding in YYYY-MM-DD format"),
   end_date: z
     .string()
-    .describe("End date of the project in MM/DD/YYYY or YYYY-MM-DD format"),
+    .describe("Overall start date of the funding in YYYY-MM-DD format"),
 });
 
 export const generalGrantInfoSchema = z.object({
   grant_name: z.string().describe("The official name or title of the grant"),
+  start_date: z
+    .string()
+    .describe("Start date of the project in YYYY-MM-DD format"),
+  end_date: z.string().describe("End date of the project in YYYY-MM-DD format"),
   projects: z
     .array(projectSchema)
     .describe(
