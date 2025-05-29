@@ -36,8 +36,6 @@ def main() -> None:
     )
     args = argparser.parse_args()
 
-    if args.model:
-        os.environ["MODEL"] = args.model
 
     file_list = []
     if args.folder:
@@ -61,7 +59,7 @@ def main() -> None:
         return
 
     obj = json.dumps(grant_json, indent=4)
-    model_name = os.getenv("MODEL", "model")
+    model_name = args.model or os.getenv("MODEL", "model")
     if args.folder:
         base = os.path.basename(os.path.normpath(args.folder))
     else:

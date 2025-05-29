@@ -49,10 +49,10 @@ def evaluate_prediction(pred: Dict[str, Any], expected: Dict[str, Any], guidelin
         return 0.0
 
 
-def build_output_name(entry: Dict[str, Any]) -> str:
+def build_output_name(entry: Dict[str, Any], model: str | None) -> str:
     """Return the output JSON file name produced by ``grant.py`` for an entry."""
 
-    model_name = os.getenv("MODEL", "model")
+    model_name = model or os.getenv("MODEL", "model")
     if "folder" in entry:
         base = os.path.basename(os.path.normpath(entry["folder"]))
     else:
@@ -92,9 +92,6 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if args.model:
-        os.environ["MODEL"] = args.model
-
     with open(args.config, "r") as f:
         config = json.load(f)
 
@@ -106,7 +103,7 @@ def main() -> None:
     results = []
     for entry in config:
         runtime = run_grant(entry, args.model)
-        output_file = build_output_name(entry)
+        output_file = build_output_name(entry, args.model)
         with open(output_file, "r") as f:
             predicted = json.load(f)
         with open(entry["expected"], "r") as f:
