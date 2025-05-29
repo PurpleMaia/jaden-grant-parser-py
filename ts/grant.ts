@@ -25,23 +25,31 @@ async function collectPdfFiles(dir: string): Promise<string[]> {
 const args = process.argv.slice(2);
 if (args.length < 1) {
   console.log(
-    "Usage: ts-node grant.ts <k-value> [--folder <dir> | <pdf1> [pdf2 ...]]\n" +
-      "Example: ts-node grant.ts 3 --folder ./pdfs"
+    "Usage: ts-node grant.ts <k-value> [-m <model>] [--folder <dir> | <pdf1> [pdf2 ...]]\n" +
+      "Example: ts-node grant.ts 3 -m gemma3 --folder ./pdfs"
   );
   process.exit(1);
 }
 
 const k = parseInt(args[0], 10);
 let folder: string | undefined;
+let modelArg: string | undefined;
 const filepaths: string[] = [];
 for (let i = 1; i < args.length; i++) {
   const arg = args[i];
   if ((arg === "--folder" || arg === "-f") && i + 1 < args.length) {
     folder = args[i + 1];
     i++;
+  } else if ((arg === "--model" || arg === "-m") && i + 1 < args.length) {
+    modelArg = args[i + 1];
+    i++;
   } else {
     filepaths.push(arg);
   }
+}
+
+if (modelArg) {
+  process.env.MODEL = modelArg;
 }
 
 async function resolveFilepaths(): Promise<string[]> {
@@ -92,7 +100,7 @@ async function resolveFilepaths(): Promise<string[]> {
     console.log("Asking LLM...");
     const llmQuestion = llmQueries[key];
     console.log("Q:", llmQuestion);
-    const response = await retrieveDataFromLlm(llmQuestion, context, schema);
+    const response = await retrieveDataFromLlm(llmQuestion, context, schema, modelArg);
     console.log("response:", response);
 
     console.log("Updating grant json...");
@@ -100,7 +108,7 @@ async function resolveFilepaths(): Promise<string[]> {
     console.log(JSON.stringify(grant));
   }
 
-  const model = process.env.MODEL || "model";
+  const model = modelArg || process.env.MODEL || "model";
   let identifier: string;
   if (folder) {
     identifier = path.basename(folder);
