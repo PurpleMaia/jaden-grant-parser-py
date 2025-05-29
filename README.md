@@ -43,6 +43,13 @@ uv run grant.py [<path to pdf> ...] [-f <folder>] -k <k-value>
 Provide either a list of PDF files or use `-f`/`--folder` to recursively search
 for PDFs under the given directory.
 
+The resulting JSON file name now includes the model name from the `MODEL`
+environment variable and the grant source. For example:
+
+```
+grant-gemma3-mygrant.json
+```
+
 ## TypeScript usage
 
 The TypeScript project lives in the `ts/` directory. After installing the dependencies with Yarn, run:

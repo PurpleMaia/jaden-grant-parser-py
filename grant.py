@@ -9,6 +9,7 @@ from langchain_core.vectorstores import InMemoryVectorStore
 import argparse
 import json
 import os
+import re
 
 
 def main() -> None:
@@ -99,7 +100,16 @@ def main() -> None:
 
     # write to json file
     obj = json.dumps(grant_json, indent=4)
-    with open("grant.json", "w") as outfile:
+    model_name = os.getenv("MODEL", "model")
+    if args.folder:
+        base = os.path.basename(os.path.normpath(args.folder))
+    else:
+        # join pdf file names without extensions
+        names = [os.path.splitext(os.path.basename(f))[0] for f in file_list]
+        base = "_".join(names)
+    base = re.sub(r"[^A-Za-z0-9_-]+", "_", base)
+    filename = f"grant-{model_name}-{base}.json"
+    with open(filename, "w") as outfile:
         outfile.write(obj)
 
 
