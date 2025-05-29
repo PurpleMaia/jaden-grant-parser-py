@@ -8,13 +8,14 @@ from langchain_ollama import OllamaEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 import argparse
 import json
+import os
 
 
 def main() -> None:
     argparser = argparse.ArgumentParser(description="Parse grant PDF files")
     argparser.add_argument(
         "files",
-        nargs="+",
+        nargs="*",
         help="Path(s) to one or more PDF files for the same grant",
     )
     argparser.add_argument(
@@ -23,13 +24,31 @@ def main() -> None:
         default=4,
         help="# nearest neighbors to retrieve for similarity search",
     )
+    argparser.add_argument(
+        "-f",
+        "--folder",
+        help="Folder to recursively search for PDF files",
+    )
     args = argparser.parse_args()
+
+    file_list = []
+    if args.folder:
+        if not os.path.isdir(args.folder):
+            argparser.error(f"Folder '{args.folder}' does not exist")
+        for root, _, files in os.walk(args.folder):
+            for fname in files:
+                if fname.lower().endswith(".pdf"):
+                    file_list.append(os.path.join(root, fname))
+    if not file_list and args.files:
+        file_list = args.files
+    if not file_list:
+        argparser.error("Please specify a folder or one or more PDF files")
 
     print("Loading PDF...")
     try:
-        pages = parse(args.files)
+        pages = parse(file_list)
     except Exception as e:
-        joined = ", ".join(args.files)
+        joined = ", ".join(file_list)
         print(f"Failed to load PDF(s) '{joined}': {e}")
         return
 
