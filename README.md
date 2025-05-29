@@ -37,8 +37,11 @@ yarn install
 - embedding model **nomic-embed-text**, chat llm **gemma3**
 
 ```bash
-uv run grant.py <path to pdf> [<additional pdfs>...] -k <k-value>
+uv run grant.py [<path to pdf> ...] [-f <folder>] -k <k-value>
 ```
+
+Provide either a list of PDF files or use `-f`/`--folder` to recursively search
+for PDFs under the given directory.
 
 ## TypeScript usage
 
