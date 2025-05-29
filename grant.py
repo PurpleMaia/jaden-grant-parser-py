@@ -10,9 +10,11 @@ import argparse
 import json
 import os
 import re
+from dotenv import load_dotenv
 
 
 def main() -> None:
+    load_dotenv()
     argparser = argparse.ArgumentParser(description="Parse grant PDF files")
     argparser.add_argument(
         "files",
@@ -30,7 +32,15 @@ def main() -> None:
         "--folder",
         help="Folder to recursively search for PDF files",
     )
+    argparser.add_argument(
+        "-m",
+        "--model",
+        help="Chat completion model name (overrides MODEL env variable)",
+    )
     args = argparser.parse_args()
+
+    if args.model:
+        os.environ["MODEL"] = args.model
 
     file_list = []
     if args.folder:
