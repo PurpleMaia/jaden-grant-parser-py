@@ -14,10 +14,15 @@ export async function simSearch(query: string, k: number, vectorStore: MemoryVec
   return context;
 }
 
-export async function retrieveDataFromLlm(question: string, context: string, schema: ReturnType<typeof determineSchema>): Promise<any> {
+export async function retrieveDataFromLlm(
+  question: string,
+  context: string,
+  schema: ReturnType<typeof determineSchema>,
+  modelName?: string
+): Promise<any> {
   dotenv.config();
   const llm = new ChatOpenAI({
-    modelName: process.env.MODEL,
+    modelName: modelName || process.env.MODEL,
     temperature: 0,
     openAIApiKey: process.env.OPENAI_KEY,
     configuration: { baseURL: process.env.OPENAI_BASE_URL }
