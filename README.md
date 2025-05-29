@@ -48,10 +48,10 @@ for PDFs under the given directory.
 The TypeScript project lives in the `ts/` directory. After installing the dependencies with Yarn, run:
 
 ```bash
-npx ts-node grant.ts <k-value> <path to pdf> [additional pdfs...]
+npx ts-node grant.ts <k-value> [--folder <dir> | <path to pdf> [additional pdfs...]]
 ```
 
-You can provide multiple PDF files for a single grant; all pages will be loaded together.
+You can provide multiple PDF files for a single grant, or pass `--folder` to load every PDF under a directory recursively. All pages will be loaded together.
 
 ## Environment variables
 
