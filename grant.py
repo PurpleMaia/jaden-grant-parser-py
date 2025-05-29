@@ -11,16 +11,26 @@ import json
 
 
 def main() -> None:
-    argparser = argparse.ArgumentParser(description="Parse a grant file (.pdf)")
-    argparser.add_argument("filepath", type=str, help="Path to the grant pdf file")
-    argparser.add_argument("k", type=int, help="# nearest neighbors to retrieve for similarity search")
+    argparser = argparse.ArgumentParser(description="Parse grant PDF files")
+    argparser.add_argument(
+        "files",
+        nargs="+",
+        help="Path(s) to one or more PDF files for the same grant",
+    )
+    argparser.add_argument(
+        "-k",
+        type=int,
+        default=4,
+        help="# nearest neighbors to retrieve for similarity search",
+    )
     args = argparser.parse_args()
 
     print("Loading PDF...")
     try:
-        pages = parse(args.filepath)
+        pages = parse(args.files)
     except Exception as e:
-        print(f"Failed to load PDF '{args.filepath}': {e}")
+        joined = ", ".join(args.files)
+        print(f"Failed to load PDF(s) '{joined}': {e}")
         return
 
     embeddings = OllamaEmbeddings(model="nomic-embed-text")
