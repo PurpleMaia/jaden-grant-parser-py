@@ -96,6 +96,16 @@ uv run uvicorn api_app:app --reload
 
 Then once that loads, open the browser to http://localhost:8000/web
 
+The API can be tested with a curl command like this (k and model are optional and note that the grant pdf can be in a folder like pdfs/grant.pdf)
+
+```
+curl -X POST http://localhost:8000/api/grant \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -F "files=@grant.pdf" \
+  -F "k=5" \
+  -F "model=gemma3"
+```
+
 ## CLI Evaluation
 
 The `evaluate.py` script automates running `grant.py` on a set of PDFs and
