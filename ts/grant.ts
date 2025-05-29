@@ -4,6 +4,9 @@ import { OllamaEmbeddings } from "@langchain/community/embeddings/ollama";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import * as fs from "fs";
 import * as path from "path";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 async function collectPdfFiles(dir: string): Promise<string[]> {
   let files: string[] = [];
@@ -93,5 +96,16 @@ async function resolveFilepaths(): Promise<string[]> {
     console.log(JSON.stringify(grant));
   }
 
-  await fs.promises.writeFile("grant.json", JSON.stringify(grant, null, 4));
+  const model = process.env.MODEL || "model";
+  let identifier: string;
+  if (folder) {
+    identifier = path.basename(folder);
+  } else {
+    identifier = filesToParse
+      .map((f) => path.basename(f, path.extname(f)))
+      .join("_");
+  }
+  const safeIdentifier = identifier.replace(/[^a-zA-Z0-9_-]+/g, "_");
+  const outputName = `grant_${model}_${safeIdentifier}.json`;
+  await fs.promises.writeFile(outputName, JSON.stringify(grant, null, 4));
 })();
