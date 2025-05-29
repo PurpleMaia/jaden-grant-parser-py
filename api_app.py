@@ -62,6 +62,7 @@ app = FastAPI()
 TOKEN = os.getenv("API_TOKEN")
 WEB_USER = os.getenv("WEB_USER")
 WEB_PASS = os.getenv("WEB_PASS")
+DEFAULT_MODEL = os.getenv("MODEL")
 
 
 @app.post("/api/grant")
@@ -89,15 +90,12 @@ async def post_grant(
                 pass
     return result
 
-
-_FORM = """
-<form method='post' enctype='multipart/form-data'>
-  <input type='file' name='files' multiple><br>
-  k: <input type='number' name='k' value='4'><br>
-  model: <input type='text' name='model'><br>
-  <button type='submit'>Submit</button>
-</form>
-"""
+_FORM = "<form method='post' enctype='multipart/form-data'>"
+_FORM += "<input type='file' name='files' multiple><br>"
+_FORM += "k: <input type='number' name='k' value='10'> (default 10)<br>"
+_FORM += "model: <input type='text' name='model' value='"+DEFAULT_MODEL+"'> (default "+DEFAULT_MODEL+")<br>"
+_FORM += "<button type='submit'>Submit</button>"
+_FORM += "</form>"
 
 
 def _check_basic(creds: HTTPBasicCredentials) -> None:
