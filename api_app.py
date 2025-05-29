@@ -68,7 +68,7 @@ DEFAULT_MODEL = os.getenv("MODEL")
 @app.post("/api/grant")
 async def post_grant(
     files: list[UploadFile] = File(...),
-    k: int = 4,
+    k: int = 5,
     model: str | None = None,
     creds: HTTPAuthorizationCredentials = Depends(bearer),
 ):
@@ -92,7 +92,7 @@ async def post_grant(
 
 _FORM = "<form method='post' enctype='multipart/form-data'>"
 _FORM += "<input type='file' name='files' multiple><br>"
-_FORM += "k: <input type='number' name='k' value='10'> (default 10)<br>"
+_FORM += "k: <input type='number' name='k' value='5'> (default 5)<br>"
 _FORM += "model: <input type='text' name='model' value='"+DEFAULT_MODEL+"'> (default "+DEFAULT_MODEL+")<br>"
 _FORM += "<button type='submit'>Submit</button>"
 _FORM += "</form>"
