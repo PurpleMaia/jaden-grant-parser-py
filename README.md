@@ -32,7 +32,7 @@ cd ts
 yarn install
 ```
 
-## Python usage
+## CLI Python usage
 
 - embedding model **nomic-embed-text**, chat llm **gemma3**
 
@@ -50,7 +50,7 @@ The resulting JSON file name includes the model name from `--model` or the
 grant-gemma3-mygrant.json
 ```
 
-## TypeScript usage
+## CLI TypeScript usage
 
 The TypeScript project lives in the `ts/` directory. After installing the dependencies with Yarn, run:
 
@@ -68,15 +68,15 @@ list of the provided PDF file names joined with underscores.
 ## Environment variables
 
 The scripts look for these variables in a `.env` file, but you can also pass the
-model name with the ``--model`` command-line option to override ``MODEL``.
+model name with the `--model` command-line option to override `MODEL`.
 Create a `.env` file in the project root and provide values for:
 
 - `MODEL` – name of the chat completion model to use
 - `OPENAI_KEY` – your API key
 - `OPENAI_BASE_URL` – base URL for the OpenAI-compatible endpoint
-- `API_TOKEN` – bearer token required for `POST /api/grant`
-- `WEB_USER` – username for the `/web` basic-auth form
-- `WEB_PASS` – password for the `/web` basic-auth form
+- `API_TOKEN` – bearer token required for `POST /api/grant` (not required for CLI-only)
+- `WEB_USER` – username for the `/web` basic-auth form (not required for CLI-only)
+- `WEB_PASS` – password for the `/web` basic-auth form (not required for CLI-only)
 
 Example `.env` file:
 
@@ -86,7 +86,17 @@ OPENAI_KEY=sk-...
 OPENAI_BASE_URL=https://api.example.com/v1
 ```
 
-## Evaluation
+## Python FastAPI
+
+The code also comes with a HTML web UI and protected API endpoint. For example, to run in dev mode:
+
+```
+uv run uvicorn api_app:app --reload
+```
+
+Then once that loads, open the browser to http://localhost:8000/web
+
+## CLI Evaluation
 
 The `evaluate.py` script automates running `grant.py` on a set of PDFs and
 compares the produced JSON against reference files. The configuration is
