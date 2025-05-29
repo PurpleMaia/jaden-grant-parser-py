@@ -23,11 +23,12 @@ class FakeLoader:
         return [Document(page_content="content", metadata={"page":1}), Document(page_content="content2", metadata={"page":2})]
 
 def test_parse_returns_pages(monkeypatch):
-    # Patch PyPDFLoader in parser module
+    """parse() should return all pages from multiple PDFs."""
+    # Patch PyPDFLoader in parser module so each PDF yields two pages
     monkeypatch.setattr(parser, 'PyPDFLoader', lambda *a, **k: FakeLoader())
-    pages = parser.parse('dummy.pdf')
+    pages = parser.parse(["dummy1.pdf", "dummy2.pdf"])
     assert isinstance(pages, list)
-    assert len(pages) == 2
+    assert len(pages) == 4
     assert all(isinstance(p, Document) for p in pages)
 
 class FakeLLM:
