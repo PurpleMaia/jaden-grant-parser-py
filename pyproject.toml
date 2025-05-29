@@ -10,4 +10,5 @@ dependencies = [
     "langchain-openai>=0.3.18",
     "pypdf>=5.5.0",
     "fastapi>=0.111.0",
+    "python-multipart>=0.0.20",
 ]

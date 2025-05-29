@@ -19,7 +19,9 @@ def process_grant(files: list[str], k: int = 4, model: str | None = None) -> dic
     if model:
         os.environ["MODEL"] = model
 
+    print("parsing files")
     pages = parse(files)
+    print("making embeddings")
     embeddings = OllamaEmbeddings(model="nomic-embed-text")
     vector_store = InMemoryVectorStore.from_documents(pages, embeddings)
 
@@ -40,12 +42,15 @@ def process_grant(files: list[str], k: int = 4, model: str | None = None) -> dic
         ),
     }
 
+    print("running LLM queries")
     grant_json: dict[str, object] = {}
     for key in llm_queries:
         context = sim_search(vec_queries[key], k, vector_store)
         py_obj = determine_pyobj(key)
         response = retrieve_data_from_llm(llm_queries[key], context, py_obj)
         grant_json.update(response)
+    print("returning json")
+    print(grant_json)
 
     return grant_json
 
