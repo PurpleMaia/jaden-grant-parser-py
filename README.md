@@ -74,6 +74,9 @@ Create a `.env` file in the project root and provide values for:
 - `MODEL` – name of the chat completion model to use
 - `OPENAI_KEY` – your API key
 - `OPENAI_BASE_URL` – base URL for the OpenAI-compatible endpoint
+- `API_TOKEN` – bearer token required for `POST /api/grant`
+- `WEB_USER` – username for the `/web` basic-auth form
+- `WEB_PASS` – password for the `/web` basic-auth form
 
 Example `.env` file:
 
