@@ -44,7 +44,8 @@ def main() -> None:
     if not file_list:
         argparser.error("Please specify a folder or one or more PDF files")
 
-    print("Loading PDF...")
+    print("Loading PDF(s)...")
+    print(file_list)
     try:
         pages = parse(file_list)
     except Exception as e:
@@ -52,6 +53,7 @@ def main() -> None:
         print(f"Failed to load PDF(s) '{joined}': {e}")
         return
 
+    print("Starting embedding")
     embeddings = OllamaEmbeddings(model="nomic-embed-text")
     vector_store = InMemoryVectorStore.from_documents(pages, embeddings)
 
