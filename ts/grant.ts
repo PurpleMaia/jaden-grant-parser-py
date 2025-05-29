@@ -66,13 +66,17 @@ async function resolveFilepaths(): Promise<string[]> {
   const vectorStore = await MemoryVectorStore.fromDocuments(pages, embeddings);
 
   const llmQueries: Record<string, string> = {
-    general: "What is the full name of the grant? List all projects or programs stated, including each project's name, start date, and end date.",
-    spending: "What is the total grant amount? Break down the spending into: fringe benefits, indirect costs, travel, equipment, and other. For \u201cother,\u201d provide a list of items with their names and cost. Return only valid JSON."
+    general:
+      "What is the full name of the grant? List all projects or programs stated, including each project's name, start date, and end date.",
+    spending:
+      "What is the total grant amount? Break down the spending into: fringe benefits, indirect costs, travel, equipment, and other. For \u201cother,\u201d provide a list of items with their names and cost. Return only valid JSON.",
   };
 
   const vecQueries: Record<string, string> = {
-    general: "Information about the grant's official name, and the names, start and end dates of any funded projects or programs.",
-    spending: "Details about total funding, and how the grant money is allocated \u2014 including fringe benefits, indirect costs, travel, equipment, and other types of spending."
+    general:
+      "Information about the grant's official name, and the names, start and end dates of any funded projects or programs.",
+    spending:
+      "Details about total funding, and how the grant money is allocated \u2014 including fringe benefits, indirect costs, travel, equipment, and other types of spending.",
   };
 
   let grant: any = {};
@@ -106,6 +110,6 @@ async function resolveFilepaths(): Promise<string[]> {
       .join("_");
   }
   const safeIdentifier = identifier.replace(/[^a-zA-Z0-9_-]+/g, "_");
-  const outputName = `grant_${model}_${safeIdentifier}.json`;
+  const outputName = `grant_${safeIdentifier}_${model}.json`;
   await fs.promises.writeFile(outputName, JSON.stringify(grant, null, 4));
 })();

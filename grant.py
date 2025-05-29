@@ -108,7 +108,7 @@ def main() -> None:
         names = [os.path.splitext(os.path.basename(f))[0] for f in file_list]
         base = "_".join(names)
     base = re.sub(r"[^A-Za-z0-9_-]+", "_", base)
-    filename = f"grant-{model_name}-{base}.json"
+    filename = f"grant-{base}-{model_name}.json"
     with open(filename, "w") as outfile:
         outfile.write(obj)
     print("Finished writing to "+filename)
