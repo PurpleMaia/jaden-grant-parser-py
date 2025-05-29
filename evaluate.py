@@ -5,6 +5,7 @@ import re
 import subprocess
 import time
 from typing import Any, Dict, List
+from dotenv import load_dotenv
 
 from pydantic import BaseModel
 
@@ -61,7 +62,7 @@ def build_output_name(entry: Dict[str, Any]) -> str:
     return f"grant-{model_name}-{base}.json"
 
 
-def run_grant(entry: Dict[str, Any]) -> float:
+def run_grant(entry: Dict[str, Any], model: str | None) -> float:
     """Execute grant.py for the given entry and return runtime in seconds."""
 
     cmd: List[str] = ["python", "grant.py"]
@@ -71,6 +72,8 @@ def run_grant(entry: Dict[str, Any]) -> float:
         cmd.extend(["-f", entry["folder"]])
     if "k" in entry:
         cmd.extend(["-k", str(entry["k"])])
+    if model:
+        cmd.extend(["-m", model])
 
     start = time.perf_counter()
     subprocess.run(cmd, check=True)
@@ -79,9 +82,18 @@ def run_grant(entry: Dict[str, Any]) -> float:
 
 
 def main() -> None:
+    load_dotenv()
     parser = argparse.ArgumentParser(description="Evaluate grant parser output")
     parser.add_argument("config", help="Path to evaluation config JSON")
+    parser.add_argument(
+        "-m",
+        "--model",
+        help="Chat completion model name (overrides MODEL env variable)",
+    )
     args = parser.parse_args()
+
+    if args.model:
+        os.environ["MODEL"] = args.model
 
     with open(args.config, "r") as f:
         config = json.load(f)
@@ -93,7 +105,7 @@ def main() -> None:
 
     results = []
     for entry in config:
-        runtime = run_grant(entry)
+        runtime = run_grant(entry, args.model)
         output_file = build_output_name(entry)
         with open(output_file, "r") as f:
             predicted = json.load(f)

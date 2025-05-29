@@ -37,14 +37,14 @@ yarn install
 - embedding model **nomic-embed-text**, chat llm **gemma3**
 
 ```bash
-uv run grant.py [<path to pdf> ...] [-f <folder>] -k <k-value>
+uv run grant.py [<path to pdf> ...] [-f <folder>] [-k <k-value>] [-m <model>]
 ```
 
 Provide either a list of PDF files or use `-f`/`--folder` to recursively search
 for PDFs under the given directory.
 
-The resulting JSON file name now includes the model name from the `MODEL`
-environment variable and the grant source. For example:
+The resulting JSON file name includes the model name from `--model` or the
+`MODEL` environment variable and the grant source. For example:
 
 ```
 grant-gemma3-mygrant.json
@@ -61,13 +61,15 @@ npx ts-node grant.ts <k-value> [--folder <dir> | <path to pdf> [additional pdfs.
 You can provide multiple PDF files for a single grant, or pass `--folder` to load every PDF under a directory recursively. All pages will be loaded together.
 
 The JSON output is saved as `grant_<MODEL>_<source>.json`, where `<MODEL>` comes
-from the `MODEL` environment variable. If `--folder` is used, `<source>` is the
-name of that folder; otherwise it is a list of the provided PDF file names joined
-with underscores.
+from `--model` if provided or from the `MODEL` environment variable. If
+`--folder` is used, `<source>` is the name of that folder; otherwise it is a
+list of the provided PDF file names joined with underscores.
 
 ## Environment variables
 
-The scripts expect the following variables to be set. Create a `.env` file in the project root and provide values for:
+The scripts look for these variables in a `.env` file, but you can also pass the
+model name with the ``--model`` command-line option to override ``MODEL``.
+Create a `.env` file in the project root and provide values for:
 
 - `MODEL` – name of the chat completion model to use
 - `OPENAI_KEY` – your API key
@@ -91,7 +93,7 @@ an explicit list of files along with the expected output path.
 Run the evaluator with:
 
 ```bash
-uv run evaluate.py <config.json>
+uv run evaluate.py <config.json> [-m <model>]
 ```
 
 Example configuration:
