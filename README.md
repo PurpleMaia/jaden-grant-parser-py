@@ -45,8 +45,10 @@ uv run grant.py <path to pdf> [<additional pdfs>...] -k <k-value>
 The TypeScript project lives in the `ts/` directory. After installing the dependencies with Yarn, run:
 
 ```bash
-npx ts-node grant.ts <path to pdf> <k-value>
+npx ts-node grant.ts <k-value> <path to pdf> [additional pdfs...]
 ```
+
+You can provide multiple PDF files for a single grant; all pages will be loaded together.
 
 ## Environment variables
 

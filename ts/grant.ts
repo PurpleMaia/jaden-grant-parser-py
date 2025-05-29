@@ -6,16 +6,17 @@ import * as fs from "fs";
 
 const args = process.argv.slice(2);
 if (args.length < 2) {
-  console.log("Usage: ts-node grant.ts <path to pdf> <k-value>");
+  console.log("Usage: ts-node grant.ts <k-value> <path to pdf> [additional pdfs...]\n" +
+    "Example: ts-node grant.ts 3 file1.pdf file2.pdf");
   process.exit(1);
 }
 
-const filepath = args[0];
-const k = parseInt(args[1], 10);
+const k = parseInt(args[0], 10);
+const filepaths = args.slice(1);
 
 (async () => {
-  console.log("Loading PDF...");
-  const pages = await parse(filepath);
+  console.log("Loading PDFs...");
+  const pages = await parse(filepaths);
 
   const embeddings = new OllamaEmbeddings({ model: "nomic-embed-text" });
   const vectorStore = await MemoryVectorStore.fromDocuments(pages, embeddings);
