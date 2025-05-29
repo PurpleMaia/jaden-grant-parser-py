@@ -16,8 +16,6 @@ load_dotenv()
 
 def process_grant(files: list[str], k: int = 4, model: str | None = None) -> dict:
     """Process one or more PDF files and return grant info as a dict."""
-    if model:
-        os.environ["MODEL"] = model
 
     print("parsing files")
     pages = parse(files)
@@ -47,7 +45,7 @@ def process_grant(files: list[str], k: int = 4, model: str | None = None) -> dic
     for key in llm_queries:
         context = sim_search(vec_queries[key], k, vector_store)
         py_obj = determine_pyobj(key)
-        response = retrieve_data_from_llm(llm_queries[key], context, py_obj)
+        response = retrieve_data_from_llm(llm_queries[key], context, py_obj, model=model)
         grant_json.update(response)
     print("returning json")
     print(grant_json)

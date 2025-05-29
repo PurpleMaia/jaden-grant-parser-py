@@ -29,13 +29,13 @@ from dotenv import load_dotenv
 # downstream functions can access them without needing to load each time.
 load_dotenv()
 
-def retrieve_data_from_llm(question, context, py_obj):
+def retrieve_data_from_llm(question, context, py_obj, model: str | None = None):
     llm = ChatOpenAI(
-        model=os.getenv("MODEL"),
+        model=model or os.getenv("MODEL"),
         temperature=0,
         api_key=os.getenv("OPENAI_KEY"),
         base_url=os.getenv("OPENAI_BASE_URL")
-    )    
+    )
     
     output = JsonOutputParser(pydantic_object=py_obj)
 
