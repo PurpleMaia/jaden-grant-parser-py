@@ -5,7 +5,11 @@ import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import { z } from "zod";
 import * as dotenv from "dotenv";
 
-export async function simSearch(query: string, k: number, vectorStore: MemoryVectorStore): Promise<string> {
+export async function simSearch(
+  query: string,
+  k: number,
+  vectorStore: MemoryVectorStore
+): Promise<string> {
   const docs = await vectorStore.similaritySearch(query, k);
   let context = "";
   for (const doc of docs) {
@@ -25,7 +29,7 @@ export async function retrieveDataFromLlm(
     modelName: modelName || process.env.MODEL,
     temperature: 0,
     openAIApiKey: process.env.OPENAI_KEY,
-    configuration: { baseURL: process.env.OPENAI_BASE_URL }
+    configuration: { baseURL: process.env.OPENAI_BASE_URL },
   });
 
   const parser = StructuredOutputParser.fromZodSchema(schema);
@@ -60,27 +64,54 @@ Format:
 
 export const projectSchema = z.object({
   name: z.string().describe("Name or title of the project or program"),
-  start_date: z.string().describe("Start date of the project in MM/DD/YYYY or YYYY-MM-DD format"),
-  end_date: z.string().describe("End date of the project in MM/DD/YYYY or YYYY-MM-DD format"),
+  start_date: z
+    .string()
+    .describe("Start date of the project in MM/DD/YYYY or YYYY-MM-DD format"),
+  end_date: z
+    .string()
+    .describe("End date of the project in MM/DD/YYYY or YYYY-MM-DD format"),
 });
 
 export const generalGrantInfoSchema = z.object({
   grant_name: z.string().describe("The official name or title of the grant"),
-  projects: z.array(projectSchema).describe("List of projects funded by this grant, each with a name, start date, and end date"),
+  projects: z
+    .array(projectSchema)
+    .describe(
+      "List of projects funded by this grant, each with a name, start date, and end date"
+    ),
 });
 
 export const otherSchema = z.object({
-  obj: z.string().describe("A specific object or item receiving funding under 'other' spending"),
+  obj: z
+    .string()
+    .describe(
+      "A specific object or item receiving funding under 'other' spending"
+    ),
   cost: z.number().describe("Cost amount allocated to this object in USD"),
 });
 
 export const spendingInfoSchema = z.object({
   total: z.number().describe("Total amount of grant funding in USD"),
-  fringe: z.number().describe("Amount for fringe benefits such as insurance, retirement, etc."),
-  indirect: z.number().describe("Amount for indirect costs like rent, administrative overhead, and utilities"),
+  salary: z
+    .number()
+    .describe("Amount for paying employee salary or contractor pay"),
+  fringe: z
+    .number()
+    .describe(
+      "Amount for fringe/payroll benefits such as insurance, retirement, etc."
+    ),
+  indirect: z
+    .number()
+    .describe(
+      "Amount for indirect costs like rent, administrative overhead, and utilities"
+    ),
   travel: z.number().describe("Amount allocated to travel-related expenses"),
   equipment: z.number().describe("Amount allocated to equipment purchases"),
-  other: z.array(otherSchema).describe("List of other individual items or objects that received funding, with their respective cost"),
+  other: z
+    .array(otherSchema)
+    .describe(
+      "List of other individual items or objects that received funding, with their respective cost"
+    ),
 });
 
 export function determineSchema(key: string) {

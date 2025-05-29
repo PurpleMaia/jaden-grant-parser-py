@@ -87,7 +87,8 @@ class Other(BaseModel):
 
 class SpendingInfo(BaseModel):
     total: int = Field(..., description="Total amount of grant funding in USD")
-    fringe: int = Field(..., description="Amount for fringe benefits such as insurance, retirement, etc.")
+    salary: int = Field(..., description="Amount for paying employee salary or contractor pay")
+    fringe: int = Field(..., description="Amount for fringe/payroll benefits such as insurance, retirement, etc.")
     indirect: int = Field(..., description="Amount for indirect costs like rent, administrative overhead, and utilities")
     travel: int = Field(..., description="Amount allocated to travel-related expenses")
     equipment: int = Field(..., description="Amount allocated to equipment purchases")
