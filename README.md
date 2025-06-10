@@ -11,17 +11,17 @@ Both versions load a PDF, create an in-memory vector store from embeddings, perf
 
 ### Python
 
-1. Create a virtual environment using [uv](https://github.com/astral-sh/uv):
+Install required Python packages using [uv](https://github.com/astral-sh/uv):
 
-   ```bash
-   uv venv
-   ```
+```bash
+# install uv if you don't already have it
+curl -Ls https://astral.sh/uv/install.sh | sh
 
-2. Install the Python requirements:
-
-   ```bash
-   uv pip install -r requirements.txt
-   ```
+# create a virtual environment and install dependencies (note that sourcing the .venv is required in case you also use conda)
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+```
 
 ### TypeScript
 
