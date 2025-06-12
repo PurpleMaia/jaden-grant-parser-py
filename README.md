@@ -43,11 +43,11 @@ uv run grant.py [<path to pdf> ...] [-f <folder>] [-k <k-value>] [-m <model>]
 Provide either a list of PDF files or use `-f`/`--folder` to recursively search
 for PDFs under the given directory.
 
-The resulting JSON file name includes the model name from `--model` or the
-`MODEL` environment variable and the grant source. For example:
+The resulting JSON file name includes the grant source followed by the model
+name from `--model` or the `MODEL` environment variable. For example:
 
 ```
-grant-gemma3-mygrant.json
+grant-mygrant-gemma3.json
 ```
 
 ## CLI TypeScript usage
@@ -60,10 +60,10 @@ npx ts-node grant.ts <k-value> [-m <model>] [--folder <dir> | <path to pdf> [add
 
 You can provide multiple PDF files for a single grant, or pass `--folder` to load every PDF under a directory recursively. All pages will be loaded together.
 
-The JSON output is saved as `grant_<MODEL>_<source>.json`, where `<MODEL>` comes
-from `--model` if provided or from the `MODEL` environment variable. If
-`--folder` is used, `<source>` is the name of that folder; otherwise it is a
-list of the provided PDF file names joined with underscores.
+The JSON output is saved as `grant_<source>_<MODEL>.json`, where `<source>` is
+the name of the folder if `--folder` is used, or a list of the provided PDF file
+names joined with underscores. `<MODEL>` comes from `--model` if provided or
+from the `MODEL` environment variable.
 
 ## Environment variables
 
